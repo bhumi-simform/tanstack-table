@@ -1,4 +1,4 @@
-import React, { HTMLAttributes, HTMLProps } from 'react'
+import React, { HTMLProps } from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
 import {
@@ -63,112 +63,153 @@ function App() {
   const columns = React.useMemo<ColumnDef<Person>[]>(
     () => [
       {
-        header: 'Name',
-        footer: props => props.column.id,
-        columns: [
-          {
-            accessorKey: 'firstName',
-            header: ({ table }) => (
-              <>
-                <IndeterminateCheckbox
-                  {...{
-                    checked: table.getIsAllRowsSelected(),
-                    indeterminate: table.getIsSomeRowsSelected(),
-                    onChange: table.getToggleAllRowsSelectedHandler(),
-                  }}
-                />{' '}
+        accessorKey: 'firstName',
+        header: ({ table }) => (
+          <>
+            <IndeterminateCheckbox
+              {...{
+                checked: table.getIsAllRowsSelected(),
+                indeterminate: table.getIsSomeRowsSelected(),
+                onChange: table.getToggleAllRowsSelectedHandler(),
+              }}
+            />{' '}
+            <button
+              {...{
+                onClick: table.getToggleAllRowsExpandedHandler(),
+              }}
+            >
+              {table.getIsAllRowsExpanded() ? '👇' : '👉'}
+            </button>{' '}
+            Button
+          </>
+        ),
+        cell: ({ row, getValue }) => (
+          <div
+            style={{
+              // Since rows are flattened by default,
+              // we can use the row.depth property
+              // and paddingLeft to visually indicate the depth
+              // of the row
+              paddingLeft: `${row.depth * 2}rem`,
+            }}
+          >
+            <>
+              <IndeterminateCheckbox
+                {...{
+                  checked: row.getIsSelected(),
+                  indeterminate: row.getIsSomeSelected(),
+                  onChange: row.getToggleSelectedHandler(),
+                }}
+              />{' '}
+              {row.getCanExpand() ? (
                 <button
                   {...{
-                    onClick: table.getToggleAllRowsExpandedHandler(),
+                    onClick: row.getToggleExpandedHandler(),
+                    style: { cursor: 'pointer' },
                   }}
                 >
-                  {table.getIsAllRowsExpanded() ? '👇' : '👉'}
-                </button>{' '}
-                First Name
-              </>
-            ),
-            cell: ({ row, getValue }) => (
-              <div
-                style={{
-                  // Since rows are flattened by default,
-                  // we can use the row.depth property
-                  // and paddingLeft to visually indicate the depth
-                  // of the row
-                  paddingLeft: `${row.depth * 2}rem`,
+                  {row.getIsExpanded() ? '👇' : '👉'}
+                </button>
+              ) : (
+                '🔵'
+              )}{' '}
+              {getValue()}
+            </>
+          </div>
+        ),
+        footer: props => props.column.id,
+      },
+
+      {
+        accessorKey: 'firstName',
+        header: ({ table }) => (
+          <>
+            <IndeterminateCheckbox
+              {...{
+                checked: table.getIsAllRowsSelected(),
+                indeterminate: table.getIsSomeRowsSelected(),
+                onChange: table.getToggleAllRowsSelectedHandler(),
+              }}
+            />{' '}
+            <button
+              {...{
+                onClick: table.getToggleAllRowsExpandedHandler(),
+              }}
+            >
+              {table.getIsAllRowsExpanded() ? '👇' : '👉'}
+            </button>{' '}
+            First Name
+          </>
+        ),
+        cell: ({ row, getValue }) => (
+          <div
+            style={{
+              // Since rows are flattened by default,
+              // we can use the row.depth property
+              // and paddingLeft to visually indicate the depth
+              // of the row
+              paddingLeft: `${row.depth * 2}rem`,
+            }}
+          >
+            <>
+              <IndeterminateCheckbox
+                {...{
+                  checked: row.getIsSelected(),
+                  indeterminate: row.getIsSomeSelected(),
+                  onChange: row.getToggleSelectedHandler(),
                 }}
-              >
-                <>
-                  <IndeterminateCheckbox
-                    {...{
-                      checked: row.getIsSelected(),
-                      indeterminate: row.getIsSomeSelected(),
-                      onChange: row.getToggleSelectedHandler(),
-                    }}
-                  />{' '}
-                  {row.getCanExpand() ? (
-                    <button
-                      {...{
-                        onClick: row.getToggleExpandedHandler(),
-                        style: { cursor: 'pointer' },
-                      }}
-                    >
-                      {row.getIsExpanded() ? '👇' : '👉'}
-                    </button>
-                  ) : (
-                    '🔵'
-                  )}{' '}
-                  {getValue()}
-                </>
-              </div>
-            ),
-            footer: props => props.column.id,
-          },
-          {
-            accessorFn: row => row.lastName,
-            id: 'lastName',
-            cell: info => info.getValue(),
-            header: () => <span>Last Name</span>,
-            footer: props => props.column.id,
-          },
-        ],
+              />{' '}
+              {row.getCanExpand() ? (
+                <button
+                  {...{
+                    onClick: row.getToggleExpandedHandler(),
+                    style: { cursor: 'pointer' },
+                  }}
+                >
+                  {row.getIsExpanded() ? '👇' : '👉'}
+                </button>
+              ) : (
+                '🔵'
+              )}{' '}
+              {getValue()}
+            </>
+          </div>
+        ),
+        footer: props => props.column.id,
       },
       {
-        header: 'Info',
+        accessorFn: row => row.lastName,
+        id: 'lastName',
+        cell: info => info.getValue(),
+        header: () => <span>Last Name</span>,
         footer: props => props.column.id,
-        columns: [
-          {
-            accessorKey: 'age',
-            header: () => 'Age',
-            footer: props => props.column.id,
-          },
-          {
-            header: 'More Info',
-            columns: [
-              {
-                accessorKey: 'visits',
-                header: () => <span>Visits</span>,
-                footer: props => props.column.id,
-              },
-              {
-                accessorKey: 'status',
-                header: 'Status',
-                footer: props => props.column.id,
-              },
-              {
-                accessorKey: 'progress',
-                header: 'Profile Progress',
-                footer: props => props.column.id,
-              },
-            ],
-          },
-        ],
+      },
+      {
+        accessorKey: 'age',
+        header: () => 'Age',
+        footer: props => props.column.id,
+      },
+      {
+        accessorKey: 'visits',
+        header: () => <span>Visits</span>,
+        footer: props => props.column.id,
+      },
+      {
+        accessorKey: 'status',
+        header: 'Status',
+        footer: props => props.column.id,
+      },
+      {
+        accessorKey: 'progress',
+        header: 'Profile Progress',
+        footer: props => props.column.id,
       },
     ],
     []
   )
 
   const [data, setData] = React.useState(() => makeData(100, 5, 3))
-  const refreshData = () => setData(() => makeData(100, 5, 3))
+  // const refreshData = () => setData(() => makeData(100, 5, 3))
   const [expanded, setExpanded] = React.useState<ExpandedState>({})
   const table = useReactTable({
     data,
@@ -231,10 +272,10 @@ function App() {
             </tr>
           ))}
         </thead>
-        <tbody>
-          {table.getRowModel().rows.map(row => {
-            return (
-              <React.Fragment key={row.id}>
+        {table.getRowModel().rows.map(row => {
+          return (
+            <React.Fragment key={row.id}>
+              <tbody>
                 <DraggableRow row={row} reorderRow={reorderRow}>
                   {row.getVisibleCells().map(cell => {
                     return (
@@ -247,10 +288,10 @@ function App() {
                     )
                   })}
                 </DraggableRow>
-              </React.Fragment>
-            )
-          })}
-        </tbody>
+              </tbody>
+            </React.Fragment>
+          )
+        })}
       </table>
       <div className="h-2" />
       <div className="flex items-center gap-2">
