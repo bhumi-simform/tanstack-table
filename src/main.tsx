@@ -246,7 +246,7 @@ function App() {
               );
             }
             return (
-                <DraggableRow key={row.id} row={row} reorderRow={reorderRow} />
+              <DraggableRow key={row.id} row={row} reorderRow={reorderRow} />
             );
           })}
         </tbody>
