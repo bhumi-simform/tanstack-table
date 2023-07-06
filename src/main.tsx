@@ -1,4 +1,4 @@
-import React, { HTMLProps } from "react";
+import React, { HTMLProps, useState } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import {
@@ -48,7 +48,9 @@ const DraggableRow = ({
       {row.getVisibleCells().map((cell) =>
         cell.column.id === "dragButton" ? (
           <td ref={dropRef} key={cell.id}>
-            <button ref={dragRef}>🟰</button>
+            <button ref={dragRef}>
+              <i className="gg-components"></i>
+            </button>
           </td>
         ) : (
           <td key={cell.id}>
@@ -61,6 +63,8 @@ const DraggableRow = ({
 };
 
 function App() {
+  const [checkboxCount, setCheckboxCount] = useState(0);
+  const [toggle, setToggle] = useState(false);
   const rerender = React.useReducer(() => ({}), {})[1];
   const reorderRow = (draggedRowIndex: number, targetRowIndex: number) => {
     data.splice(
@@ -70,6 +74,15 @@ function App() {
     );
     setData([...data]);
   };
+
+  const handleToggle = (isChecked, id) => {
+    // console.log(id);
+    !isChecked ? setToggle(true) : setToggle(false);
+    // console.log(isChecked);
+
+    // setShowNewRow((prev) => !prev);
+  };
+
   const columns = React.useMemo<ColumnDef<Person>[]>(
     () => [
       {
@@ -84,20 +97,20 @@ function App() {
         accessorKey: "firstName",
         header: ({ table }) => (
           <>
-            <IndeterminateCheckbox
+            {/* <IndeterminateCheckbox
               {...{
                 checked: table.getIsAllRowsSelected(),
                 indeterminate: table.getIsSomeRowsSelected(),
                 onChange: table.getToggleAllRowsSelectedHandler(),
               }}
-            />{" "}
-            <button
+            />{" "} */}
+            {/* <button
               {...{
                 onClick: table.getToggleAllRowsExpandedHandler(),
               }}
             >
               {table.getIsAllRowsExpanded() ? "👇" : "👉"}
-            </button>{" "}
+            </button>{" "} */}
             First Name
           </>
         ),
@@ -115,6 +128,12 @@ function App() {
               <IndeterminateCheckbox
                 {...{
                   checked: row.getIsSelected(),
+                  onClick: () => handleToggle(row.getIsSelected(), row.id),
+                  // onClick: () =>
+                  //   handleToggle(
+                  //     selectedIds.includes(row.getIsSelected()),
+                  //     row.id
+                  //   ),
                   indeterminate: row.getIsSomeSelected(),
                   onChange: row.getToggleSelectedHandler(),
                 }}
@@ -126,7 +145,12 @@ function App() {
                     style: { cursor: "pointer" },
                   }}
                 >
-                  {row.getIsExpanded() ? "👇" : "👉"}
+                  {/* <i className="gg-chevron-double-right"></i> */}
+                  {row.getIsExpanded() ? (
+                    <i className="gg-chevron-double-down"></i>
+                  ) : (
+                    <i className="gg-chevron-double-right"></i>
+                  )}
                 </button>
               ) : (
                 "🔵"
@@ -239,6 +263,17 @@ function App() {
           ))}
         </thead>
         <tbody>
+          {toggle && (
+            <tr>
+              <td>Count: {checkboxCount}</td>
+              {/* <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td> */}
+            </tr>
+          )}
           {table.getRowModel().rows.map((row) => {
             if (row.depth != 0) {
               return (

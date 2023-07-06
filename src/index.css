@@ -71,3 +71,103 @@ td,
     opacity: 1;
   }
 }
+
+/* right arrow */
+
+.gg-chevron-double-right {
+  box-sizing: border-box;
+  position: relative;
+  display: block;
+  transform: scale(var(--ggs, 1));
+  width: 22px;
+  height: 22px;
+}
+
+.gg-chevron-double-right::after,
+.gg-chevron-double-right::before {
+  content: "";
+  display: block;
+  box-sizing: border-box;
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid;
+  border-top: 2px solid;
+  transform: rotate(45deg);
+  top: 7px;
+  right: 6px;
+}
+
+.gg-chevron-double-right::after {
+  right: 11px;
+}
+
+/* controller */
+.gg-components {
+  box-sizing: border-box;
+  position: relative;
+  display: block;
+  transform: rotate(45deg) scale(var(--ggs, 1));
+  width: 14px;
+  height: 14px;
+  background: linear-gradient(to left, currentColor 10px, transparent 0)
+      no-repeat 0 0/2px 6px,
+    linear-gradient(to left, currentColor 10px, transparent 0) no-repeat 4px 0/2px
+      6px,
+    linear-gradient(to left, currentColor 10px, transparent 0) no-repeat 8px 0/2px
+      6px,
+    linear-gradient(to left, currentColor 10px, transparent 0) no-repeat 12px 0/2px
+      6px,
+    linear-gradient(to left, currentColor 10px, transparent 0) no-repeat 0 8px/2px
+      6px,
+    linear-gradient(to left, currentColor 10px, transparent 0) no-repeat 4px 8px/2px
+      6px,
+    linear-gradient(to left, currentColor 10px, transparent 0) no-repeat 8px 8px/2px
+      6px,
+    linear-gradient(to left, currentColor 10px, transparent 0) no-repeat 12px
+      8px/2px 6px;
+}
+
+.gg-components::after,
+.gg-components::before {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 6px;
+  height: 2px;
+  border-top: 6px double;
+  border-bottom: 6px double;
+}
+
+.gg-components::after {
+  right: 0;
+}
+
+/* down arrow */
+.gg-chevron-double-down {
+  box-sizing: border-box;
+  position: relative;
+  display: block;
+  transform: scale(var(--ggs, 1));
+  width: 22px;
+  height: 22px;
+}
+
+.gg-chevron-double-down::after,
+.gg-chevron-double-down::before {
+  content: "";
+  display: block;
+  box-sizing: border-box;
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-bottom: 2px solid;
+  border-right: 2px solid;
+  transform: rotate(45deg);
+  left: 7px;
+  top: 3px;
+}
+
+.gg-chevron-double-down::after {
+  top: 8px;
+}
