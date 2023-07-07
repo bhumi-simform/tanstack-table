@@ -65,7 +65,8 @@ const DraggableRow = ({
 function App() {
   const [checkboxCount, setCheckboxCount] = useState(0);
   const [toggle, setToggle] = useState(false);
-  const rerender = React.useReducer(() => ({}), {})[1];
+  const [selectList, setSelectList] = useState<any[]>([]);
+  // const rerender = React.useReducer(() => ({}), {})[1];
   const reorderRow = (draggedRowIndex: number, targetRowIndex: number) => {
     data.splice(
       targetRowIndex,
@@ -76,12 +77,19 @@ function App() {
   };
 
   const handleToggle = (isChecked, id) => {
-    // console.log(id);
-    !isChecked ? setToggle(true) : setToggle(false);
-    // console.log(isChecked);
-
-    // setShowNewRow((prev) => !prev);
+    if (!isChecked) {
+      setSelectList((prevArray) => [...prevArray, id]);
+      setToggle(true);
+      setCheckboxCount((count) => count + 1);
+    } else {
+      setSelectList((prevArray) => prevArray.filter((item) => item !== id));
+      setCheckboxCount((count) => count - 1);
+    }
   };
+  console.log(selectList);
+  React.useEffect(() => {
+    setToggle(selectList.length > 0);
+  }, [selectList]);
 
   const columns = React.useMemo<ColumnDef<Person>[]>(
     () => [
